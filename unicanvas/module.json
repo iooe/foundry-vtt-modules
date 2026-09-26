@@ -1,0 +1,12 @@
+{
+  "id": "unicanvas",
+  "title": "UniCanvas",
+  "description": "A reusable high-performance DOM/SVG canvas engine for Foundry modules.",
+  "version": "2.5.0",
+  "authors": [{ "name": "UniCanvas" }],
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/unicanvas.js", "scripts/documents.js", "scripts/launchers.js"],
+  "styles": ["styles/unicanvas.css", "styles/ui-kit.css"],
+  "library": true,
+  "license": "LICENSE.txt"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "mind-palace",
+  "title": "Mind Palace — Detective Board",
+  "description": "A cinematic mind palace and evidence-board editor for detective roleplay.",
+  "version": "2.7.2",
+  "authors": [{ "name": "Mind Palace" }],
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/mind-palace.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "ru", "name": "Русский", "path": "lang/ru.json" }
+  ],
+  "socket": true,
+  "relationships": {
+    "requires": [
+      {
+        "id": "unicanvas",
+        "type": "module",
+        "compatibility": { "minimum": "2.5.0" }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "city-viewer",
+        "type": "module",
+        "compatibility": { "minimum": "6.1.0" }
+      },
+      {
+        "id": "dialogue-stage",
+        "type": "module",
+        "compatibility": { "minimum": "3.0.0" }
+      },
+      {
+        "id": "chronicle",
+        "type": "module",
+        "compatibility": { "minimum": "1.0.0" }
+      }
+    ]
+  }
+}

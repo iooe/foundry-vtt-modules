@@ -1,0 +1,25 @@
+{
+  "id": "city-viewer",
+  "title": "City Viewer — City Editor",
+  "description": "Fullscreen interactive cities and a visual editor for the Game Master.",
+  "version": "6.3.0",
+  "scripts": ["scripts/vendor/tsparticles.slim.bundle.min.js"],
+  "authors": [{ "name": "City Viewer" }],
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/city-viewer.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "ru", "name": "Русский", "path": "lang/ru.json" }
+  ],
+  "socket": true,
+  "relationships": {
+    "requires": [
+      { "id": "unicanvas", "type": "module", "compatibility": { "minimum": "2.5.0" } }
+    ],
+    "recommends": [
+      { "id": "midi-qol", "type": "module" },
+      { "id": "chronicle", "type": "module" }
+    ]
+  }
+}

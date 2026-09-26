@@ -1,0 +1,283 @@
+/* UniCanvas UI Kit — compact, neutral editor components shared by all modules. */
+:root {
+  --ucx-bg: #090b0d;
+  --ucx-panel: #101317;
+  --ucx-surface: #15191e;
+  --ucx-surface-hover: #1b2026;
+  --ucx-field: #0b0e12;
+  --ucx-border: #2a3037;
+  --ucx-border-soft: #ffffff12;
+  --ucx-text: #ebe7df;
+  --ucx-muted: #8b929a;
+  --ucx-accent: #b79a68;
+  --ucx-danger: #c46767;
+  --ucx-radius: 6px;
+  --ucx-control: 34px;
+  --ucx-header: 58px;
+  --ucx-shadow: 0 18px 60px #000a;
+  --ucx-font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+#cv-editor *,
+#cv-editor *::before,
+#cv-editor *::after,
+#mp-editor *,
+#mp-editor *::before,
+#mp-editor *::after,
+#ds-editor *,
+#ds-editor *::before,
+#ds-editor *::after,
+#chronicle-editor *,
+#chronicle-editor *::before,
+#chronicle-editor *::after,
+.ucx-dialog *,
+.ucx-dialog *::before,
+.ucx-dialog *::after {
+  box-sizing: border-box;
+}
+
+#cv-editor,
+#mp-editor,
+#ds-editor,
+#chronicle-editor {
+  color: var(--ucx-text) !important;
+  background: var(--ucx-bg) !important;
+  font-family: var(--ucx-font) !important;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+#cv-editor > header,
+#mp-editor > header,
+#ds-editor > header,
+#chronicle-editor > header {
+  min-height: var(--ucx-header) !important;
+  border-bottom: 1px solid var(--ucx-border) !important;
+  background: #0e1115f2 !important;
+  box-shadow: 0 8px 30px #0006 !important;
+  backdrop-filter: blur(14px);
+}
+#cv-editor button,
+#mp-editor button,
+#ds-editor button,
+#chronicle-editor button,
+.ucx-dialog button {
+  min-height: var(--ucx-control);
+  margin: 0;
+  padding: 0 11px;
+  border: 1px solid var(--ucx-border);
+  border-radius: var(--ucx-radius);
+  color: var(--ucx-text);
+  background: var(--ucx-surface);
+  box-shadow: none;
+  font: 600 11px/1 var(--ucx-font);
+  transition: border-color .14s, background .14s, color .14s, box-shadow .14s;
+}
+#cv-editor button:not(:disabled):hover,
+#mp-editor button:not(:disabled):hover,
+#ds-editor button:not(:disabled):hover,
+#chronicle-editor button:not(:disabled):hover,
+.ucx-dialog button:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--ucx-accent) 72%, var(--ucx-border));
+  color: #fff;
+  background: var(--ucx-surface-hover);
+}
+#cv-editor button:focus-visible,
+#mp-editor button:focus-visible,
+#ds-editor button:focus-visible,
+#chronicle-editor button:focus-visible,
+.ucx-dialog button:focus-visible {
+  outline: 2px solid var(--ucx-accent);
+  outline-offset: 2px;
+}
+#cv-editor button:disabled,
+#mp-editor button:disabled,
+#ds-editor button:disabled,
+#chronicle-editor button:disabled,
+.ucx-dialog button:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+#cv-editor button.gold,
+#mp-editor button.accent,
+#ds-editor button.accent,
+#chronicle-editor button.ch-primary,
+.ucx-dialog button.primary {
+  border-color: #c1a875;
+  color: #17130d;
+  background: #c1a875;
+}
+#cv-editor input,
+#cv-editor textarea,
+#cv-editor select,
+#mp-editor input,
+#mp-editor textarea,
+#mp-editor select,
+#ds-editor input,
+#ds-editor textarea,
+#ds-editor select,
+#chronicle-editor input,
+#chronicle-editor textarea,
+#chronicle-editor select,
+.ucx-dialog input,
+.ucx-dialog textarea,
+.ucx-dialog select {
+  min-height: var(--ucx-control);
+  border: 1px solid var(--ucx-border) !important;
+  border-radius: var(--ucx-radius) !important;
+  color: var(--ucx-text) !important;
+  background: var(--ucx-field) !important;
+  box-shadow: none !important;
+  outline: none;
+  padding-inline: 9px;
+  font: 500 12px/1.4 var(--ucx-font) !important;
+}
+#cv-editor input:focus,
+#cv-editor textarea:focus,
+#cv-editor select:focus,
+#mp-editor input:focus,
+#mp-editor textarea:focus,
+#mp-editor select:focus,
+#ds-editor input:focus,
+#ds-editor textarea:focus,
+#ds-editor select:focus,
+#chronicle-editor input:focus,
+#chronicle-editor textarea:focus,
+#chronicle-editor select:focus,
+.ucx-dialog input:focus,
+.ucx-dialog textarea:focus,
+.ucx-dialog select:focus {
+  border-color: var(--ucx-accent) !important;
+  box-shadow: 0 0 0 3px #b79a681c !important;
+}
+#cv-editor label,
+#mp-editor label,
+#ds-editor label,
+#chronicle-editor label,
+.ucx-dialog label {
+  color: var(--ucx-muted);
+  font: 600 10px/1.35 var(--ucx-font);
+}
+#cv-editor aside,
+#mp-editor aside,
+#ds-editor aside,
+#chronicle-editor aside {
+  border-color: var(--ucx-border-soft) !important;
+  background: var(--ucx-panel) !important;
+}
+#cv-editor h2,
+#mp-editor h2,
+#ds-editor h2,
+#chronicle-editor h2,
+.ucx-dialog h2,
+.ucx-dialog h3 {
+  color: var(--ucx-text);
+  font-family: var(--ucx-font);
+  letter-spacing: -.015em;
+}
+
+.ucx-overlay {
+  position: fixed;
+  z-index: 16000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #050608c4;
+  backdrop-filter: blur(7px);
+  overscroll-behavior: contain;
+}
+.ucx-dialog {
+  width: min(720px, calc(100vw - 32px));
+  max-height: min(820px, calc(100vh - 32px));
+  overflow: hidden;
+  border: 1px solid var(--ucx-border);
+  border-radius: 9px;
+  color: var(--ucx-text);
+  background: var(--ucx-panel);
+  box-shadow: var(--ucx-shadow);
+  font-family: var(--ucx-font);
+}
+.ucx-dialog > header {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ucx-border-soft);
+  background: #0d1014;
+}
+.ucx-dialog > header small {
+  color: var(--ucx-accent);
+  font: 700 8px/1 var(--ucx-font);
+  letter-spacing: .16em;
+}
+.ucx-dialog > header h2 { margin: 4px 0 0; font-size: 18px; }
+.ucx-dialog > header p { margin: 5px 0 0; color: var(--ucx-muted); font-size: 10px; }
+.ucx-dialog > header > button { width: 34px; padding: 0; }
+.ucx-dialog > main { max-height: calc(100vh - 190px); overflow: auto; padding: 16px; }
+.ucx-dialog > footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--ucx-border-soft); }
+.cv-feature-dialog { width: min(430px, calc(100vw - 32px)); padding-bottom: 14px; }
+.cv-feature-dialog > label { display: block; padding: 16px; }
+.cv-feature-dialog > label input { display: block; width: 100%; margin-top: 6px; padding: 8px; }
+
+.cv-preset-window > main { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cv-preset-window section > header { display: flex; align-items: end; justify-content: space-between; margin-bottom: 8px; }
+.cv-preset-window section h3 { margin: 3px 0 0; font-size: 13px; }
+.cv-preset-window section small { color: var(--ucx-muted); font-size: 8px; letter-spacing: .12em; }
+.cv-preset-list { display: grid; gap: 6px; }
+.cv-preset-list article { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px; border: 1px solid var(--ucx-border-soft); border-radius: var(--ucx-radius); background: var(--ucx-surface); }
+.cv-preset-list article > div { min-width: 0; display: flex; align-items: center; gap: 9px; }
+.cv-preset-list article > div > i { color: var(--ucx-accent); }
+.cv-preset-list article strong,.cv-preset-list article small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cv-preset-list article strong { max-width: 190px; font-size: 10px; }
+.cv-preset-list article nav { display: flex; gap: 5px; }
+.cv-preset-list article nav button:last-child { width: 32px; padding: 0; color: var(--ucx-danger); }
+.ucx-dialog .empty { padding: 20px; border: 1px dashed var(--ucx-border); border-radius: var(--ucx-radius); color: var(--ucx-muted); text-align: center; font-size: 10px; }
+
+.cv-presence-dialog { width: min(680px, calc(100vw - 32px)); }
+.cv-presence-dialog main { display: grid; gap: 6px; }
+.cv-presence-dialog article { display: grid; grid-template-columns: 38px 1fr auto auto; align-items: center; gap: 9px; padding: 8px; border: 1px solid var(--ucx-border-soft); border-radius: var(--ucx-radius); background: var(--ucx-surface); }
+.cv-presence-dialog .avatar { width: 38px; height: 38px; border-radius: 5px; background-position: center; background-size: cover; }
+.cv-presence-dialog article strong,.cv-presence-dialog article small { display: block; }
+.cv-presence-dialog article small { margin-top: 3px; color: var(--ucx-muted); font-size: 8px; }
+.cv-preset-row { margin: 10px 0; }
+.cv-preset-row button { width: 100%; }
+.cv-bindings { margin: 12px 0; padding: 10px; border: 1px solid var(--ucx-border-soft); border-radius: var(--ucx-radius); background: #0b0e11; }
+
+.cv-roll-request { overflow: hidden; border: 1px solid var(--ucx-border); border-radius: 7px; background: var(--ucx-panel); }
+.cv-roll-request header { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-bottom: 1px solid var(--ucx-border-soft); }
+.cv-roll-request header > i { color: var(--ucx-accent); font-size: 20px; }
+.cv-roll-request small { color: var(--ucx-muted); font-size: 8px; letter-spacing: .12em; }
+.cv-roll-request h3 { margin: 2px 0 0; color: var(--ucx-text); font: 650 14px var(--ucx-font); }
+.cv-roll-request p { margin: 0; padding: 10px 12px; color: #c8c5bf; }
+.cv-roll-request button { width: calc(100% - 24px); margin: 0 12px 12px; min-height: 34px; border: 1px solid var(--ucx-accent); border-radius: 5px; color: #19150f; background: var(--ucx-accent); font-weight: 700; }
+
+@media (max-width: 720px) {
+  .cv-preset-window > main { grid-template-columns: 1fr; }
+  .cv-presence-dialog article { grid-template-columns: 34px 1fr; }
+  .cv-presence-dialog article button { grid-column: span 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cv-editor *,
+  #mp-editor *,
+  #ds-editor *,
+  #chronicle-editor *,
+  .ucx-dialog * {
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  #cv-editor button:focus-visible,
+  #mp-editor button:focus-visible,
+  #ds-editor button:focus-visible,
+  #chronicle-editor button:focus-visible,
+  .ucx-dialog button:focus-visible {
+    outline-color: Highlight;
+  }
+}

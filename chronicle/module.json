@@ -1,0 +1,41 @@
+{
+  "id": "chronicle",
+  "title": "Chronicle — Timeline Cases",
+  "description": "Кооперативное восстановление хронологии событий с последствиями для города, диалогов и расследования.",
+  "version": "1.0.1",
+  "authors": [{ "name": "Chronicle" }],
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/chronicle.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "ru", "name": "Русский", "path": "lang/ru.json" }
+  ],
+  "socket": true,
+  "relationships": {
+    "requires": [
+      {
+        "id": "unicanvas",
+        "type": "module",
+        "compatibility": { "minimum": "2.5.0" }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "city-viewer",
+        "type": "module",
+        "compatibility": { "minimum": "6.1.0" }
+      },
+      {
+        "id": "mind-palace",
+        "type": "module",
+        "compatibility": { "minimum": "2.7.0" }
+      },
+      {
+        "id": "dialogue-stage",
+        "type": "module",
+        "compatibility": { "minimum": "3.0.0" }
+      }
+    ]
+  }
+}
