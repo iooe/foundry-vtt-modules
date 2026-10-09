@@ -144,7 +144,7 @@ const plain = (value) => JSON.parse(JSON.stringify(value));
   storedProject = api.normalizeProject(api.exampleCase());
   onceHandlers.get("ready")();
   const publicApi = modules.get("mind-palace").api;
-  assert.equal(publicApi.version, "2.7.0");
+  assert.equal(publicApi.version, JSON.parse(fs.readFileSync(path.join(moduleRoot, "module.json"), "utf8")).version);
   assert.equal(typeof publicApi.getConsequences, "function");
   assert.equal(typeof publicApi.retryConsequences, "function");
   let board = storedProject.boards[0];

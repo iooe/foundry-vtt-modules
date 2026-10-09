@@ -366,6 +366,8 @@ function normalizeScreen(raw = {}) {
       media: o.media === "video" ? "video" : "image",
       markerImage: text(o.markerImage, "", 2048),
       imageFolder: text(o.imageFolder, "", 2048),
+      imageSource: ["data", "public", "s3"].includes(o.imageSource) ? o.imageSource : "data",
+      imageBucket: text(o.imageBucket, "", 256),
       imagePool: (Array.isArray(o.imagePool) ? o.imagePool : []).filter(v => typeof v === "string" && /\.(png|jpe?g|webp|gif|avif|svg)(?:\?.*)?$/i.test(v)).slice(0, 1000),
       markerIcon: iconClass(o.markerIcon),
       markerColor: cssColor(o.markerColor),
@@ -417,6 +419,8 @@ function normalizeScreen(raw = {}) {
     background: data.background,
     backgroundFolder: text(data.backgroundFolder, "", 2048),
     backgroundPool: (Array.isArray(data.backgroundPool) ? data.backgroundPool : []).filter(v => typeof v === "string" && /\.(png|jpe?g|webp|gif|avif|svg)(?:\?.*)?$/i.test(v)).slice(0, 1000),
+    backgroundSource: ["data", "public", "s3"].includes(data.backgroundSource) ? data.backgroundSource : "data",
+    backgroundBucket: text(data.backgroundBucket, "", 256),
     fit: data.fit,
     ambience: data.ambience,
     weather: data.weather,
@@ -2887,12 +2891,12 @@ function renderEditor() {
         .sort((a, b) => b.z - a.z)
         .map(
           (x) =>
-            `<button data-select="${esc(x.id)}" class="${x.id === S.selected ? "active" : ""}"><span>${x.kind === "poi" ? `<i class="fas ${esc(x.markerIcon)}"></i>` : x.media === "video" ? '<i class="fas fa-film"></i>' : `<img src="${esc(x.src)}">`}</span>${esc(x.name)}<i class="fas fa-grip-lines"></i></button>`,
+            `<button data-select="${esc(x.id)}" class="${x.id === S.selected ? "active" : ""}"><span>${x.kind === "poi" ? x.markerImage ? `<img src="${esc(x.markerImage)}" alt="">` : `<i class="fas ${esc(x.markerIcon)}"></i>` : x.media === "video" ? '<i class="fas fa-film"></i>' : `<img src="${esc(x.src)}">`}</span>${esc(x.name)}<i class="fas fa-grip-lines"></i></button>`,
         )
         .join("") || `<em>${tr("UI.AddFirst", "Add the first object")}</em>`
     }</div>`;
   const stage = S.editor.querySelector(".cv-stage");
-  stage.style.backgroundImage = cssUrl(d.background);
+  stage.style.backgroundImage = d.background ? cssUrl(d.background) : "none";
   stage.style.backgroundSize = d.fit;
   stage.innerHTML = `<div class="cv-title"><h1>${esc(d.title)}</h1><p>${esc(d.subtitle)}</p></div>${d.objects.map((x) => objectHTML(x, true)).join("")}`;
   previewEditorWeather(stage, d);
@@ -3085,7 +3089,7 @@ function visitEffectEditor(object) {
 }
 function screenProps(d, c) {
   const controls = `<div class="cv-grid"><label>${tr("Editor.Canvas", "Canvas movement")}<select data-city="pan"><option value="none" ${d.pan === "none" ? "selected" : ""}>${tr("Pan.None", "Fixed")}</option><option value="vertical" ${d.pan === "vertical" ? "selected" : ""}>${tr("Pan.Vertical", "Vertical drag")}</option><option value="horizontal" ${d.pan === "horizontal" ? "selected" : ""}>${tr("Pan.Horizontal", "Horizontal drag")}</option><option value="free" ${d.pan === "free" ? "selected" : ""}>${tr("Pan.Free", "Free drag")}</option></select></label><label>${tr("Editor.PointStyle", "Point style")}<select data-city="pointStyle"><option value="pin" ${d.pointStyle === "pin" ? "selected" : ""}>${tr("Point.Pin", "Fantasy pin")}</option><option value="map" ${d.pointStyle === "map" ? "selected" : ""}>${tr("Point.Map", "Map mark")}</option></select></label></div><div class="cv-grid">${field(tr("Editor.CameraZoom", "Starting zoom"), "cameraZoom", d.cameraZoom, "city", "number")}<label class="cv-toggle"><input type="checkbox" data-city="cameraFollow" ${d.cameraFollow ? "checked" : ""}><span></span> ${tr("Editor.CameraFollow", "Camera follows the pointer")}</label></div><label class="cv-toggle"><input type="checkbox" data-city="mindPalace" ${d.mindPalace ? "checked" : ""}><span></span> ${tr("Editor.MindPalace", "Mind Palace journal button")}</label><div class="cv-preset-row"><button data-preset-action="save-location"><i class="fas fa-box-archive"></i> ${tr("Editor.SaveLocationPreset", "Save location as preset")}</button></div>`;
-  return `<div class="cv-panel-title"><div><h2>${tr("UI.ScreenSettings", "Screen settings")}</h2><p>${tr("UI.ScreenSettingsSub", "Background and behavior of the current screen")}</p></div></div><button type="button" data-copy-screen-uuid>${tr("Media.CopyUUID", "Copy UUID")}</button>${field(tr("UI.City", "City"), "name", c.name, "collection")}${field(tr("UI.ScreenName", "Screen name"), "title", d.title, "city")}<div class="cv-grid cv-title-toggles"><label class="cv-toggle"><input type="checkbox" data-city="showTitle" ${d.showTitle ? "checked" : ""}><span></span> ${tr("UI.Title", "Title")}</label><label class="cv-toggle"><input type="checkbox" data-city="showSubtitle" ${d.showSubtitle ? "checked" : ""}><span></span> ${tr("UI.Subtitle", "Subtitle")}</label></div>${fileField(tr("UI.Background", "Background"), "background", d.background, "city", "background", "folder-open")}<div class="cv-preset-row"><button type="button" data-background-folder>${tr("Media.RandomFolder", "Random image folder")}</button>${d.backgroundFolder ? `<button type="button" data-background-folder-clear>${tr("Media.ClearFolder", "Clear")}</button>` : ""}</div><div class="cv-grid"><label>${tr("UI.Effect", "Effect")}<select data-city="weather"><option value="none" ${d.weather === "none" ? "selected" : ""}>${tr("UI.None", "None")}</option><option value="rain" ${d.weather === "rain" ? "selected" : ""}>${tr("UI.Rain", "Rain")}</option><option value="snow" ${d.weather === "snow" ? "selected" : ""}>${tr("UI.Snow", "Snow")}</option><option value="fog" ${d.weather === "fog" ? "selected" : ""}>${tr("UI.Fog", "Fog")}</option><option value="embers" ${d.weather === "embers" ? "selected" : ""}>${tr("UI.Embers", "Embers")}</option></select></label><label>${tr("UI.Transition", "Transition")}<select data-city="transition"><option value="fade" ${d.transition === "fade" ? "selected" : ""}>${tr("UI.Fade", "Fade")}</option><option value="slide" ${d.transition === "slide" ? "selected" : ""}>${tr("UI.Slide", "Slide")}</option><option value="zoom" ${d.transition === "zoom" ? "selected" : ""}>${tr("UI.Zoom", "Zoom")}</option><option value="blur" ${d.transition === "blur" ? "selected" : ""}>${tr("UI.Blur", "Blur")}</option><option value="iris" ${d.transition === "iris" ? "selected" : ""}>${tr("UI.Iris", "Iris")}</option></select></label></div>${controls}<label class="cv-toggle"><input type="checkbox" data-city="parallax" ${d.parallax ? "checked" : ""}><span></span> ${tr("UI.Parallax", "Parallax")}</label><details class="cv-advanced"><summary><i class="fas fa-sliders"></i> ${tr("UI.Advanced", "Advanced")}</summary>${field(tr("UI.Subtitle", "Subtitle"), "subtitle", d.subtitle, "city")}<label>${tr("UI.Fit", "Image fit")}<select data-city="fit"><option value="cover" ${d.fit === "cover" ? "selected" : ""}>${tr("UI.Cover", "Fill screen")}</option><option value="contain" ${d.fit === "contain" ? "selected" : ""}>${tr("UI.Contain", "Show entire image")}</option></select></label>${fileField(tr("UI.Music", "Music"), "ambience", d.ambience, "city", "ambience", "music")}${field(tr("UI.ParallaxStrength", "Parallax strength"), "parallaxStrength", d.parallaxStrength, "city", "number")}${field(tr("UI.EffectDensity", "Effect density"), "weatherIntensity", d.weatherIntensity, "city", "number")}</details>`;
+  return `<div class="cv-panel-title"><div><h2>${tr("UI.ScreenSettings", "Screen settings")}</h2><p>${tr("UI.ScreenSettingsSub", "Background and behavior of the current screen")}</p></div></div><button type="button" data-copy-screen-uuid>${tr("Media.CopyUUID", "Copy UUID")}</button>${field(tr("UI.City", "City"), "name", c.name, "collection")}${field(tr("UI.ScreenName", "Screen name"), "title", d.title, "city")}<div class="cv-grid cv-title-toggles"><label class="cv-toggle"><input type="checkbox" data-city="showTitle" ${d.showTitle ? "checked" : ""}><span></span> ${tr("UI.Title", "Title")}</label><label class="cv-toggle"><input type="checkbox" data-city="showSubtitle" ${d.showSubtitle ? "checked" : ""}><span></span> ${tr("UI.Subtitle", "Subtitle")}</label></div>${fileField(tr("UI.Background", "Background"), "background", d.background, "city", "background", "folder-open")}<div class="cv-preset-row"><button type="button" data-background-folder>${tr("Media.RandomFolder", "Random image folder")}</button>${d.backgroundFolder ? `<button type="button" data-background-folder-refresh title="${tr("Media.RefreshFolder", "Refresh folder")}"><i class="fas fa-rotate"></i></button><button type="button" data-background-folder-clear>${tr("Media.ClearFolder", "Clear")}</button>` : ""}</div><div class="cv-grid"><label>${tr("UI.Effect", "Effect")}<select data-city="weather"><option value="none" ${d.weather === "none" ? "selected" : ""}>${tr("UI.None", "None")}</option><option value="rain" ${d.weather === "rain" ? "selected" : ""}>${tr("UI.Rain", "Rain")}</option><option value="snow" ${d.weather === "snow" ? "selected" : ""}>${tr("UI.Snow", "Snow")}</option><option value="fog" ${d.weather === "fog" ? "selected" : ""}>${tr("UI.Fog", "Fog")}</option><option value="embers" ${d.weather === "embers" ? "selected" : ""}>${tr("UI.Embers", "Embers")}</option></select></label><label>${tr("UI.Transition", "Transition")}<select data-city="transition"><option value="fade" ${d.transition === "fade" ? "selected" : ""}>${tr("UI.Fade", "Fade")}</option><option value="slide" ${d.transition === "slide" ? "selected" : ""}>${tr("UI.Slide", "Slide")}</option><option value="zoom" ${d.transition === "zoom" ? "selected" : ""}>${tr("UI.Zoom", "Zoom")}</option><option value="blur" ${d.transition === "blur" ? "selected" : ""}>${tr("UI.Blur", "Blur")}</option><option value="iris" ${d.transition === "iris" ? "selected" : ""}>${tr("UI.Iris", "Iris")}</option></select></label></div>${controls}<label class="cv-toggle"><input type="checkbox" data-city="parallax" ${d.parallax ? "checked" : ""}><span></span> ${tr("UI.Parallax", "Parallax")}</label><details class="cv-advanced"><summary><i class="fas fa-sliders"></i> ${tr("UI.Advanced", "Advanced")}</summary>${field(tr("UI.Subtitle", "Subtitle"), "subtitle", d.subtitle, "city")}<label>${tr("UI.Fit", "Image fit")}<select data-city="fit"><option value="cover" ${d.fit === "cover" ? "selected" : ""}>${tr("UI.Cover", "Fill screen")}</option><option value="contain" ${d.fit === "contain" ? "selected" : ""}>${tr("UI.Contain", "Show entire image")}</option></select></label>${fileField(tr("UI.Music", "Music"), "ambience", d.ambience, "city", "ambience", "music")}${field(tr("UI.ParallaxStrength", "Parallax strength"), "parallaxStrength", d.parallaxStrength, "city", "number")}${field(tr("UI.EffectDensity", "Effect density"), "weatherIntensity", d.weatherIntensity, "city", "number")}</details>`;
 }
 function props(o) {
   const appearance =
@@ -3125,16 +3129,47 @@ function props(o) {
         ? `<section class="cv-exploration-editor"><h2><i class="fas fa-map-signs"></i> ${tr("Exploration.Title", "Exploration")}</h2><div class="cv-grid"><label>${tr("Exploration.InitialState", "Initial access")}<select data-object="pointState"><option value="visible" ${o.pointState === "visible" ? "selected" : ""}>${tr("Exploration.Visible", "Visible")}</option><option value="secret" ${o.pointState === "secret" ? "selected" : ""}>${tr("Exploration.Secret", "Secret")}</option><option value="locked" ${o.pointState === "locked" ? "selected" : ""}>${tr("Exploration.Locked", "Locked")}</option></select></label><label>${tr("Exploration.VisitTracking", "Visited tracking")}<select data-object="visitMode"><option value="none" ${o.visitMode === "none" ? "selected" : ""}>${tr("Exploration.VisitNone", "Off")}</option><option value="personal" ${o.visitMode === "personal" ? "selected" : ""}>${tr("Exploration.VisitPersonal", "For each player")}</option><option value="group" ${o.visitMode === "group" ? "selected" : ""}>${tr("Exploration.VisitGroup", "For the whole group")}</option></select></label></div><label>${tr("Exploration.LockReason", "Locked reason")}<textarea data-object="lockReason" rows="3" placeholder="${esc(tr("Exploration.LockReasonPlaceholder", "What must the party do to enter?"))}">${esc(o.lockReason)}</textarea></label><p class="cv-action-note"><i class="fas fa-circle-info"></i> ${tr("Exploration.EditorHint", "The Game Master can change live access directly in the viewer.")}</p>${visitEffectEditor(o)}</section>`
         : "";
   return `<h2><i class="fas fa-wand-magic-sparkles"></i> ${tr("UI.Layer", "Layer")}</h2>${field(tr("UI.Name", "Name"), "name", o.name)}
-    <div class="cv-kind"><button data-kind="asset" class="${o.kind === "asset" ? "active" : ""}"><i class="fas fa-image"></i> ${tr("UI.Image", "Image")}</button><button data-kind="poi" class="${o.kind === "poi" ? "active" : ""}"><i class="fas fa-location-dot"></i> ${tr("UI.PointOfInterest", "Point of interest")}</button></div>${appearance}${imageFolderControls(o)}<div class="cv-grid">${field(tr("Media.ZOrder", "Layer order"), "z", o.z, "object", "number")}<button type="button" data-order="top">${tr("UI.Top", "To top")}</button></div><button type="button" data-copy-entity-uuid>${tr("Media.CopyUUID", "Copy UUID")}</button>${explorationFields}
+    <div class="cv-kind"><button data-kind="asset" class="${o.kind === "asset" ? "active" : ""}"><i class="fas fa-image"></i> ${tr("UI.Image", "Image")}</button><button data-kind="poi" class="${o.kind === "poi" ? "active" : ""}"><i class="fas fa-location-dot"></i> ${tr("UI.PointOfInterest", "Point of interest")}</button></div>${appearance}${imageFolderControls(o)}<div class="cv-layer-controls">${field(tr("Media.ZOrder", "Layer order"), "z", o.z, "object", "number")}<div class="cv-order"><button type="button" data-order="bottom" title="${tr("Media.Bottom", "To bottom")}" aria-label="${tr("Media.Bottom", "To bottom")}"><i class="fas fa-angles-down"></i></button><button type="button" data-order="down" title="${tr("UI.Lower", "Lower")}" aria-label="${tr("UI.Lower", "Lower")}"><i class="fas fa-arrow-down"></i></button><button type="button" data-order="up" title="${tr("UI.Higher", "Higher")}" aria-label="${tr("UI.Higher", "Higher")}"><i class="fas fa-arrow-up"></i></button><button type="button" data-order="top" title="${tr("UI.Top", "To top")}" aria-label="${tr("UI.Top", "To top")}"><i class="fas fa-angles-up"></i></button></div></div><button type="button" data-copy-entity-uuid>${tr("Media.CopyUUID", "Copy UUID")}</button>${explorationFields}
     <h2><i class="fas fa-bolt"></i> ${tr("UI.ActiveAction", "Active action")}</h2><label class="cv-toggle"><input type="checkbox" data-object="interactive" ${o.interactive ? "checked" : ""}><span></span> ${tr("UI.PlayerAvailable", "Available to players")}</label>
     ${field(tr("UI.ActionTitle", "Action title"), "actionTitle", o.actionTitle)}<label>${tr("UI.Hint", "Hint")}<textarea data-object="hint" rows="3">${esc(o.hint)}</textarea></label>
     <label>${tr("UI.Action", "Action")}<select data-object="action">${availableActions.map(([v, l]) => `<option value="${v}" ${o.action === v ? "selected" : ""}>${tr(l, l)}</option>`).join("")}</select></label>${actionValue}
     <details class="cv-bindings" open><summary><i class="fas fa-link"></i> ${tr("Bindings.Title", "Linked documents")}</summary><p class="cv-action-note">${tr("Bindings.Help", "Drag an Actor or Journal from the sidebar into the editor, or paste its UUID.")}</p>${field(tr("Bindings.ActorUUID", "Actor UUID"), "actorUuid", o.actorUuid)}${field(tr("Bindings.JournalUUID", "Journal UUID"), "journalUuid", o.journalUuid)}</details>
-    <details class="cv-advanced"><summary><i class="fas fa-sliders"></i> ${tr("UI.Advanced", "Advanced")}</summary><div class="cv-grid">${field("X, %", "x", o.x, "object", "number")}${field("Y, %", "y", o.y, "object", "number")}${field(tr("UI.WidthPct", "Width, %"), "w", o.w, "object", "number")}${field(tr("UI.HeightPct", "Height, %"), "h", o.h, "object", "number")}${field(tr("UI.Rotation", "Rotation"), "rotation", o.rotation, "object", "number")}${field(tr("UI.Opacity", "Opacity"), "opacity", o.opacity, "object", "number")}</div><div class="cv-order"><button data-order="down"><i class="fas fa-arrow-down"></i> ${tr("UI.Lower", "Lower")}</button><button data-order="up"><i class="fas fa-arrow-up"></i> ${tr("UI.Higher", "Higher")}</button><button data-order="top"><i class="fas fa-angles-up"></i> ${tr("UI.Top", "To top")}</button></div>${fileField(tr("UI.ClickSound", "Click sound"), "sound", o.sound, "object", "sound", "volume-high")}</details><div class="cv-preset-row"><button data-preset-action="save-object"><i class="fas fa-box-archive"></i> ${tr("Editor.SaveObjectPreset", "Save as preset")}</button></div><button class="danger" data-act="delete"><i class="fas fa-trash"></i> ${tr("UI.DeleteObject", "Delete object")}</button>`;
+    <details class="cv-advanced"><summary><i class="fas fa-sliders"></i> ${tr("UI.Advanced", "Advanced")}</summary><div class="cv-grid">${field("X, %", "x", o.x, "object", "number")}${field("Y, %", "y", o.y, "object", "number")}${field(tr("UI.WidthPct", "Width, %"), "w", o.w, "object", "number")}${field(tr("UI.HeightPct", "Height, %"), "h", o.h, "object", "number")}${field(tr("UI.Rotation", "Rotation"), "rotation", o.rotation, "object", "number")}${field(tr("UI.Opacity", "Opacity"), "opacity", o.opacity, "object", "number")}</div>${fileField(tr("UI.ClickSound", "Click sound"), "sound", o.sound, "object", "sound", "volume-high")}</details><div class="cv-preset-row"><button data-preset-action="save-object"><i class="fas fa-box-archive"></i> ${tr("Editor.SaveObjectPreset", "Save as preset")}</button></div><button class="danger" data-act="delete"><i class="fas fa-trash"></i> ${tr("UI.DeleteObject", "Delete object")}</button>`;
 }
 
 function imageFolderControls(o) {
-  return `<div class="cv-preset-row"><button type="button" data-image-folder><i class="fas fa-folder-open"></i> ${tr("Media.RandomFolder", "Random image folder")}</button>${o.imageFolder ? `<button type="button" data-image-folder-clear>${tr("Media.ClearFolder", "Clear")}</button>` : ""}</div>${o.imageFolder ? `<p class="cv-action-note">${esc(o.imageFolder)} · ${o.imagePool.length}</p>` : ""}`;
+  return `<div class="cv-preset-row"><button type="button" data-image-folder><i class="fas fa-folder-open"></i> ${tr("Media.RandomFolder", "Random image folder")}</button>${o.imageFolder ? `<button type="button" data-image-folder-refresh title="${tr("Media.RefreshFolder", "Refresh folder")}"><i class="fas fa-rotate"></i></button><button type="button" data-image-folder-clear>${tr("Media.ClearFolder", "Clear")}</button>` : ""}</div>${o.imageFolder ? `<p class="cv-action-note">${esc(o.imageFolder)} · ${o.imagePool.length}</p>` : ""}`;
+}
+
+async function refreshImageFolder(background = false) {
+  const object = background ? editScreen() : selected(), editor = S.editor;
+  if (!object) return;
+  const prefix = background ? "background" : "image";
+  const folder = object[`${prefix}Folder`];
+  if (!folder) return;
+  const source = object[`${prefix}Source`] || "data", bucket = object[`${prefix}Bucket`];
+  const Picker = foundry.applications?.apps?.FilePicker?.implementation || globalThis.FilePicker;
+  try {
+    const result = await Picker.browse(source, folder, source === "s3" ? { bucket } : {});
+    const files = result.files.filter(file => /\.(png|jpe?g|webp|gif|avif|svg)(?:\?.*)?$/i.test(file)).slice(0, 1000);
+    if (!files.length) return ui.notifications.warn(tr("Media.EmptyFolder", "No images in this folder."));
+    if (S.editor !== editor || (background ? editScreen() : selected()) !== object || object[`${prefix}Folder`] !== folder) return;
+    recordUndo();
+    object[`${prefix}Pool`] = files;
+    const field = background ? "background" : object.kind === "poi" ? "markerImage" : "src";
+    if (!files.includes(object[field])) object[field] = files[0];
+    renderEditor(); autosave();
+  } catch (error) { ui.notifications.error(error.message); }
+}
+
+function moveObjectLayer(screen, object, direction) {
+  const layers = [...screen.objects].sort((a, b) => a.z - b.z);
+  const index = layers.indexOf(object);
+  if (index < 0) return;
+  const target = direction === "top" ? layers.length - 1 : direction === "bottom" ? 0 :
+    Math.max(0, Math.min(layers.length - 1, index + (direction === "up" ? 1 : -1)));
+  layers.splice(index, 1); layers.splice(target, 0, object);
+  layers.forEach((layer, index) => { layer.z = index + 1; });
 }
 async function chooseImageFolder(background = false) {
   let object = background ? editScreen() : selected();
@@ -3151,9 +3186,12 @@ async function chooseImageFolder(background = false) {
         object = background ? screen : screen?.objects.find(o => o.id === target.object);
         if (!object) return;
         recordUndo();
-        if (background) Object.assign(object, { backgroundFolder: folder, backgroundPool: files, background: files[0] });
+        const source = selection?.activeSource || "data", bucket = source === "s3" ? selection.sources?.s3?.bucket || "" : "";
+        if (background) Object.assign(object, { backgroundFolder: folder, backgroundPool: files, background: files[0], backgroundSource: source, backgroundBucket: bucket });
         else {
           object.imageFolder = folder;
+          object.imageSource = source;
+          object.imageBucket = bucket;
           object.imagePool = files;
           object[object.kind === "poi" ? "markerImage" : "src"] = files[0];
           if (object.kind !== "poi") object.media = "image";
@@ -3556,10 +3594,12 @@ function bindEditor(el) {
       return globalThis.UniCanvasDocuments?.copyUuid(MOD, ["cities", S.city, "screens", S.screen, "objects", S.selected]);
     }
     if (e.target.closest("[data-background-folder]")) return chooseImageFolder(true);
+    if (e.target.closest("[data-background-folder-refresh]")) return refreshImageFolder(true);
     if (e.target.closest("[data-background-folder-clear]")) {
       recordUndo(); Object.assign(editScreen(), { backgroundFolder: "", backgroundPool: [] }); renderEditorSelection(); return autosave();
     }
     if (e.target.closest("[data-image-folder]")) return chooseImageFolder();
+    if (e.target.closest("[data-image-folder-refresh]")) return refreshImageFolder();
     if (e.target.closest("[data-image-folder-clear]")) {
       recordUndo();
       Object.assign(selected(), { imageFolder: "", imagePool: [] });
@@ -3694,10 +3734,7 @@ function bindEditor(el) {
     const order = e.target.closest("[data-order]")?.dataset.order;
     if (order && o) {
       recordUndo();
-      if (order === "up") o.z++;
-      if (order === "down") o.z = Math.max(-10000, o.z - 1);
-      if (order === "top")
-        o.z = Math.max(...editScreen().objects.map((x) => x.z)) + 1;
+      moveObjectLayer(editScreen(), o, order);
       renderEditor();
       autosave();
     }
@@ -3855,7 +3892,7 @@ function quickRender() {
   if (!st || !d) return;
   st.style.backgroundImage = d.background
     ? cssUrl(d.background)
-    : "";
+    : "none";
   st.style.backgroundSize = d.fit;
   st.querySelector("h1").textContent = d.title;
   st.querySelector("p").textContent = d.subtitle;
@@ -5602,7 +5639,7 @@ Hooks.once("ready", async () => {
   const module = game.modules.get(MOD);
   const api = module.api || (module.api = {});
   Object.assign(api, {
-    version: "6.3.0",
+    version: "6.4.0",
     openEditor,
     editEntity(path, setting) {
       if (setting === "presets") return openPresetLibrary();

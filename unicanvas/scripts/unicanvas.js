@@ -1,5 +1,5 @@
 const MOD = "unicanvas";
-const VERSION = "2.5.0";
+const VERSION = "2.6.0";
 
 const clamp = (value, min, max) => {
   const number = Number(value);

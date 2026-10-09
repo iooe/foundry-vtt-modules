@@ -1795,6 +1795,16 @@ function bindGraphConnections(host, scene) {
     };
   });
 }
+function fitDialogueGraph() {
+  const nodes = [...(S.editor?.querySelectorAll(".ds-graph-node") || [])];
+  if (!nodes.length) return S.canvas?.fit();
+  const scene = editScene();
+  const left = Math.min(...scene.nodes.map(n => n.x));
+  const top = Math.min(...scene.nodes.map(n => n.y));
+  const right = Math.max(...scene.nodes.map((n, i) => n.x + nodes[i].offsetWidth));
+  const bottom = Math.max(...scene.nodes.map((n, i) => n.y + nodes[i].offsetHeight));
+  return S.canvas?.fitBounds({ x: left, y: top, width: right - left, height: bottom - top }, { padding: 48 });
+}
 function renderGraph(camera = null) {
   const scene = editScene();
   if (S.canvas) {
@@ -1851,6 +1861,12 @@ function renderGraph(camera = null) {
     });
   });
   bindGraphConnections(host, scene);
+  if (!camera && !S.camera) {
+    const controller = S.canvas;
+    requestAnimationFrame(() => {
+      if (S.canvas === controller && S.editor?.isConnected) fitDialogueGraph();
+    });
+  }
   if (S.selected) S.canvas.select?.(S.selected);
 }
 function renderEditor() {
@@ -2172,7 +2188,7 @@ function bindEditor(e) {
     if (cmd === "export") return exportProject();
     if (cmd === "import") return importProject();
     if (cmd === "save") return save(true);
-    if (cmd === "fit") return S.canvas?.fit();
+    if (cmd === "fit") return fitDialogueGraph();
     if (cmd === "preview") {
       await save();
       const scene = S.scene;
@@ -2536,6 +2552,7 @@ function bindEditor(e) {
   };
 }
 function autosave() {
+  globalThis.UniCanvasEditor?.setSaveState(S.editor, "dirty");
   clearTimeout(S.timer);
   S.timer = setTimeout(() => {
     S.timer = 0;
@@ -2543,12 +2560,16 @@ function autosave() {
   }, 450);
 }
 function queueSave(snapshot, notify = false) {
+  const editor = S.editor, revision = globalThis.UniCanvasEditor?.revision(editor);
   const write = async () => {
+    globalThis.UniCanvasEditor?.setSaveState(editor, "saving", revision);
     try {
       await game.settings.set(MOD, "scene", snapshot);
+      globalThis.UniCanvasEditor?.setSaveState(editor, "saved", revision);
       if (notify) ui.notifications.info(t("DS.Saved", "Диалоги сохранены."));
       return true;
     } catch (error) {
+      globalThis.UniCanvasEditor?.setSaveState(editor, "error", revision);
       reportError("save failed", error);
       return false;
     }
@@ -2817,7 +2838,7 @@ Hooks.once("ready", () => {
     if (document.visibilityState === "hidden") emergencyFlush();
   });
   game.modules.get(MOD).api = {
-    version: "3.1.0",
+    version: "3.2.0",
     open: openViewer,
     close: closeViewer,
     openEditor,

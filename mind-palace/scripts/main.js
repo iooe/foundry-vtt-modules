@@ -2952,6 +2952,7 @@ function bindEditor(el) {
   };
 }
 function autosave() {
+  globalThis.UniCanvasEditor?.setSaveState(S.editor, "dirty");
   clearTimeout(S.timer);
   S.timer = setTimeout(() => {
     S.timer = null;
@@ -2962,7 +2963,9 @@ function queueProjectSave(
   snapshot,
   { notify = false, broadcast = false } = {},
 ) {
+  const editor = S.editor, revision = globalThis.UniCanvasEditor?.revision(editor);
   const write = async () => {
+    globalThis.UniCanvasEditor?.setSaveState(editor, "saving", revision);
     try {
       snapshot.boards?.forEach((board) =>
         applyCachedCollaboration(board, S.collaborationBoards.get(board.id)),
@@ -2978,8 +2981,10 @@ function queueProjectSave(
           userId: game.user.id,
         });
       if (notify) ui.notifications.info(t("MP.Saved", "Mind palace saved."));
+      globalThis.UniCanvasEditor?.setSaveState(editor, "saved", revision);
       return true;
     } catch (error) {
+      globalThis.UniCanvasEditor?.setSaveState(editor, "error", revision);
       reportError("project save failed", error);
       return false;
     }
@@ -3673,7 +3678,7 @@ Hooks.once("ready", () => {
     if (document.visibilityState === "hidden") emergencyFlush();
   });
   game.modules.get(MOD).api = {
-    version: "2.7.2",
+    version: "2.8.0",
     open: (boardId) => openViewer(boardId),
     close: closeViewer,
     openEditor,

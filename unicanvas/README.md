@@ -1,5 +1,7 @@
 # UniCanvas
 
+Version **2.6.0** adds shared editor controls: persistent light/dark themes, sidebar search (Ctrl+K), save (Ctrl+S), compact action menus, document selectors and UUID drops. Dialogue Stage and Mind Palace show revision-aware autosave status. The authoring stylesheet is loaded after module styles during `ready`.
+
 Version 2.5.0 also provides `UniCanvas.documents`: `ensure(moduleId)`, `list(moduleId)`, `uuid(moduleId, path)`, `resolve(uuid)`, `open(uuid)`, and `copyUuid(moduleId, path)`. It indexes shared author-created suite entities as private Foundry JournalEntryPages, preserves UUIDs across edits, and archives removed records. Journal pages link back to the module editors; they are not a second source of editable project data. Suite launch buttons work even without an active Foundry Scene.
 
 UniCanvas is the shared DOM/SVG canvas runtime for the Foundry module suite. It

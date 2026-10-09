@@ -246,7 +246,7 @@ function create(options = {}) {
   return { controller, viewport, world };
 }
 
-assert.equal(api.version, "2.4.0");
+assert.equal(api.version, JSON.parse(fs.readFileSync(path.join(__dirname, "..", "module.json"), "utf8")).version);
 assert.equal(typeof api.scope, "function");
 assert.equal(typeof api.CanvasController, "function");
 

@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const source = fs.readFileSync(path.join(__dirname, '../scripts/main.js'), 'utf8');
+const start = source.indexOf('function moveObjectLayer(');
+const end = source.indexOf('async function chooseImageFolder(', start);
+const move = vm.runInNewContext(`${source.slice(start, end)}; moveObjectLayer;`);
+const objects = [{ id: 'back', z: -10 }, { id: 'middle', z: 5 }, { id: 'front', z: 5 }];
+const screen = { objects };
+const order = () => [...objects].sort((a,b) => a.z-b.z).map(object => object.id);
+move(screen, objects[0], 'up'); assert.deepEqual(order(), ['middle','back','front']);
+move(screen, objects[0], 'top'); assert.deepEqual(order(), ['middle','front','back']);
+move(screen, objects[0], 'bottom'); assert.deepEqual(order(), ['back','middle','front']);
+move(screen, objects[0], 'down'); assert.deepEqual(order(), ['back','middle','front']);
+assert.equal(new Set(objects.map(object => object.z)).size, objects.length);
+console.log('City Viewer layer order: duplicates, boundaries and front/back ok');

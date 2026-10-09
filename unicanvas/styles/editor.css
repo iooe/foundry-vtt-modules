@@ -1,0 +1,201 @@
+/* Neutral authoring surfaces. Loaded after module styles to keep one visual language. */
+:root {
+  --ucx-bg: #ffffff;
+  --ucx-panel: #f7f7f5;
+  --ucx-surface: #ffffff;
+  --ucx-surface-hover: #efefed;
+  --ucx-field: #ffffff;
+  --ucx-border: #dededb;
+  --ucx-border-soft: #e9e9e6;
+  --ucx-text: #37352f;
+  --ucx-muted: #787774;
+  --ucx-accent: #2383e2;
+  --ucx-danger: #c4554d;
+  --ucx-radius: 4px;
+  --ucx-control: 32px;
+  --ucx-header: 52px;
+  --ucx-shadow: 0 8px 28px #00000016;
+}
+:root[data-uc-editor-theme="dark"] {
+  --ucx-bg: #191919;
+  --ucx-panel: #202020;
+  --ucx-surface: #252525;
+  --ucx-surface-hover: #303030;
+  --ucx-field: #252525;
+  --ucx-border: #3c3c3c;
+  --ucx-border-soft: #303030;
+  --ucx-text: #e3e3e1;
+  --ucx-muted: #a5a5a2;
+  --ucx-accent: #529cca;
+  --ucx-danger: #eb5757;
+  --ucx-shadow: 0 8px 28px #0004;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) {
+  --uc-ui-bg: var(--ucx-bg); --uc-ui-panel: var(--ucx-panel); --uc-ui-raised: var(--ucx-surface);
+  --uc-ui-field: var(--ucx-field); --uc-ui-border: var(--ucx-border); --uc-ui-text: var(--ucx-text);
+  --uc-ui-muted: var(--ucx-muted); --uc-ui-accent: var(--ucx-accent);
+  --cv-gold: var(--ucx-text); --cv-bright: var(--ucx-accent); --cv-line: var(--ucx-border-soft);
+  --cv-card: var(--ucx-panel); --cv-border: var(--ucx-border); --cv-muted: var(--ucx-surface-hover);
+  --ch-bg: var(--ucx-bg); --ch-panel: var(--ucx-panel); --ch-raised: var(--ucx-surface);
+  --ch-field: var(--ucx-field); --ch-border: var(--ucx-border); --ch-text: var(--ucx-text);
+  --ch-muted: var(--ucx-muted); --ch-accent: var(--ucx-accent); --ch-shadow: var(--ucx-shadow);
+  --ch-serif: var(--ucx-font);
+  font: 13px/1.5 var(--ucx-font) !important;
+  color-scheme: light;
+}
+[data-uc-editor-theme="dark"] :is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) { color-scheme: dark; }
+:is(#cv-editor, #ds-editor, #mp-editor) > header,
+#chronicle-editor .ch-editor-toolbar {
+  min-height: 52px !important; height: auto !important; padding: 8px 16px !important;
+  background: var(--ucx-bg) !important; border-color: var(--ucx-border-soft) !important;
+  box-shadow: none !important; backdrop-filter: none !important; gap: 12px;
+  flex-wrap: wrap; position: relative; z-index: 12;
+}
+:is(#cv-editor, #ds-editor, #mp-editor) > header > nav { gap: 4px !important; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+:is(#cv-editor, #mp-editor) :is(.cv-brand, .mp-brand) { gap: 8px; color: var(--ucx-text) !important; }
+:is(#cv-editor, #mp-editor) :is(.cv-brand, .mp-brand) > i { font-size: 18px !important; color: var(--ucx-muted) !important; }
+:is(#cv-editor, #mp-editor) :is(.cv-brand, .mp-brand) strong,
+#ds-editor > header strong, #chronicle-editor .ch-editor-brand h1 {
+  font: 600 14px/1.4 var(--ucx-font) !important; letter-spacing: 0 !important; color: var(--ucx-text) !important;
+}
+:is(#cv-editor, #mp-editor) :is(.cv-brand, .mp-brand) small { display: none; }
+#ds-editor .ds-current-scene { color: var(--ucx-muted); font-size: 12px; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button {
+  font: 500 12px/1.3 var(--ucx-font) !important; color: var(--ucx-text) !important;
+  background: var(--ucx-surface) !important; border: 1px solid var(--ucx-border-soft) !important;
+  box-shadow: none !important; border-radius: 4px !important; letter-spacing: 0 !important;
+  min-height: 32px; cursor: pointer;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button:not(:disabled):hover {
+  background: var(--ucx-surface-hover) !important; border-color: var(--ucx-border) !important; color: var(--ucx-text) !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button:is(.active, .is-active) {
+  background: var(--ucx-surface-hover) !important; border-color: transparent !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button:is(.gold, .accent, .ch-primary) {
+  color: #fff !important; background: #2383e2 !important; border-color: #2383e2 !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button:is(.gold, .accent, .ch-primary):hover { background: #1b6fc4 !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) button:is(.danger, .ch-danger, .mp-delete-board) { color: var(--ucx-danger) !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--ucx-accent) !important; outline-offset: 2px; box-shadow: none !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(input, select, textarea) {
+  font: 400 13px/1.5 var(--ucx-font) !important; box-shadow: none !important; max-width: 100%;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) input:is([type="checkbox"], [type="radio"]) {
+  min-height: 0 !important; width: 16px; height: 16px; padding: 0; accent-color: var(--ucx-accent);
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) label { font: 500 12px/1.5 var(--ucx-font) !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(h2, h3) {
+  font-family: var(--ucx-font) !important; color: var(--ucx-text) !important; letter-spacing: 0 !important;
+  text-transform: none !important; text-shadow: none !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(small, .ds-note, .cv-action-note, .ch-kicker) {
+  color: var(--ucx-muted) !important; letter-spacing: 0 !important; text-transform: none !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-layout, .ds-graph, .mp-editor-layout > main, .ch-editor-main) { background: var(--ucx-bg) !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-stage, .mp-editor-frame) { box-shadow: var(--ucx-shadow) !important; }
+#cv-editor .cv-layout { grid-template-columns: 240px minmax(0, 1fr) 320px !important; }
+#ds-editor .ds-editor-v2 { grid-template-columns: 240px minmax(0, 1fr) 340px !important; }
+#mp-editor .mp-editor-layout { grid-template-columns: 240px minmax(0, 1fr) 320px !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) aside { scrollbar-width: thin; scrollbar-color: var(--ucx-border) transparent; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-cities, .cv-screens, .cv-layers, .ds-scene-list, .ds-character-list, .mp-board-buttons, .ch-case-list) { gap: 2px !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-cities, .cv-screens, .cv-layers, .ds-scene-list, .ds-character-list, .mp-board-buttons, .ch-case-list) > button {
+  border-color: transparent !important; background: transparent !important; min-height: 34px !important;
+  padding: 7px 8px !important; color: var(--ucx-text) !important;
+}
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-cities, .cv-screens, .cv-layers, .ds-scene-list, .ds-character-list, .mp-board-buttons, .ch-case-list) > button:is(.active, .is-active) { background: var(--ucx-surface-hover) !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) :is(.cv-cities, .cv-screens, .cv-layers, .ds-scene-list, .mp-board-buttons) i { color: var(--ucx-muted) !important; }
+#ds-editor .ds-graph-toolbar, :is(#cv-editor, #mp-editor) main > footer {
+  color: var(--ucx-muted) !important; background: var(--ucx-bg) !important; border-color: var(--ucx-border-soft) !important;
+  font: 11px/1.5 var(--ucx-font) !important;
+}
+#ds-editor .ds-graph-viewport { background-color: var(--ucx-bg) !important; background-image: radial-gradient(var(--ucx-border) 1px, transparent 1px) !important; background-size: 24px 24px !important; }
+#ds-editor .ds-graph-node { background: var(--ucx-surface) !important; color: var(--ucx-text) !important; border-color: var(--ucx-border) !important; box-shadow: 0 2px 6px #0000000c !important; }
+#ds-editor .ds-graph-node.active { outline: 2px solid var(--ucx-accent); outline-offset: 1px; }
+#ds-editor .ds-graph-node :is(header, footer, .ds-graph-choice, .ds-rule-block, .ds-choice-target) { background: transparent !important; border-color: var(--ucx-border-soft) !important; }
+#ds-editor .ds-graph-node > p { color: var(--ucx-text) !important; font: 400 13px/1.5 var(--ucx-font) !important; }
+#ds-editor :is(.ds-rule-block, .ds-choice-target, .ds-variable-list > section, .ds-inspector-head, .ds-preset-dialog > div) { background: var(--ucx-surface) !important; border-color: var(--ucx-border-soft) !important; color: var(--ucx-text) !important; }
+#ds-editor .ds-choice-rules { background: transparent !important; border-color: var(--ucx-border-soft) !important; }
+#ds-editor .ds-graph-choice em { color: var(--ucx-text) !important; }
+#ds-editor .ds-node-port { color: var(--ucx-accent) !important; background: var(--ucx-surface) !important; }
+#chronicle-editor .ch-editor-section { border-color: var(--ucx-border-soft); box-shadow: none; background: var(--ucx-surface); }
+#chronicle-editor .ch-editor-brand p { font-size: 12px; }
+.uc-editor-search { position: sticky; top: -14px; z-index: 3; display: flex; align-items: center; gap: 4px; padding: 8px 0 12px; background: var(--ucx-panel); }
+.uc-editor-search input { width: 100%; min-width: 0; }
+.uc-editor-search button { flex: 0 0 28px; padding: 0 !important; min-height: 28px !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) .uc-search-hidden { display: none !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) [data-uc-search-empty] { color: var(--ucx-muted); font-size: 12px; padding: 8px; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) [hidden] { display: none !important; }
+[data-uc-menu] { position: relative; }
+[data-uc-menu] > summary { list-style: none; display: flex; align-items: center; min-height: 32px; padding: 0 10px; border: 1px solid transparent; border-radius: 4px; cursor: pointer; font: 500 12px/1.4 var(--ucx-font); color: var(--ucx-text); }
+[data-uc-menu] > summary::-webkit-details-marker { display: none; }
+[data-uc-menu] > summary:hover, [data-uc-menu][open] > summary { background: var(--ucx-surface-hover); }
+.uc-editor-menu { position: absolute; z-index: 30; top: calc(100% + 5px); right: 0; width: max-content; min-width: 190px; max-width: min(300px, calc(100vw - 32px)); display: grid; gap: 2px; padding: 5px; border: 1px solid var(--ucx-border-soft); border-radius: 6px; background: var(--ucx-bg); box-shadow: var(--ucx-shadow); }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) .uc-editor-menu > button { width: 100% !important; text-align: left; justify-content: flex-start; border-color: transparent !important; padding: 8px 10px !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) [data-uc-theme] { width: 32px; padding: 0; border-color: transparent !important; font-size: 18px !important; }
+[data-uc-save] { color: var(--ucx-muted); font-size: 11px; white-space: nowrap; }
+[data-uc-save][data-state="error"] { color: var(--ucx-danger); }
+.uc-reference-tools { display: grid; grid-template-columns: minmax(0, 1fr) 32px; gap: 4px; margin-top: 4px; }
+.uc-reference-tools select { width: 100%; min-width: 0; }
+.uc-reference-tools small { grid-column: 1 / -1; font-weight: 400; overflow-wrap: anywhere; }
+#cv-editor .cv-preset-row { display: flex; gap: 4px; }
+#cv-editor .cv-preset-row > button { width: auto; flex: 0 0 auto; }
+#cv-editor .cv-preset-row > button:first-child { flex: 1; text-align: left; }
+#cv-editor .cv-layer-controls { display: flex; align-items: end; gap: 8px; margin: 12px 0; }
+#cv-editor .cv-layer-controls > label { flex: 1; min-width: 0; }
+#cv-editor .cv-layer-controls .cv-order { display: flex; gap: 3px; margin: 0; }
+#cv-editor .cv-layer-controls .cv-order button { width: 30px; padding: 0; }
+#cv-editor .uc-editor-menu .advanced-only { display: block !important; }
+:is(#cv-editor, #ds-editor, #mp-editor, #chronicle-editor) input[aria-invalid="true"] { border-color: var(--ucx-danger) !important; }
+.ucx-dialog, .ucx-dialog > header, .cv-bindings { background: var(--ucx-bg); }
+.ucx-dialog button.primary { color: #fff; background: #2383e2; border-color: #2383e2; }
+.ucx-overlay { backdrop-filter: none; background: #0005; }
+/* Authoring chrome stays neutral; scene art remains unchanged. */
+#cv-editor .cv-layout > main, #mp-editor .mp-board { background: var(--ucx-bg) !important; }
+#mp-editor .mp-editor-frame { background: radial-gradient(var(--ucx-border) 1px, transparent 1px) 0 0 / 24px 24px var(--ucx-bg) !important; }
+#mp-editor .mp-board { background: transparent !important; }
+#mp-editor .mp-panel-head h2 { font-size: 18px; }
+#cv-editor .cv-layers span { color: var(--ucx-text) !important; }
+#mp-editor .mp-board:before { background: radial-gradient(var(--ucx-border) 1px, transparent 1px) 0 0 / 24px 24px !important; opacity: 1; }
+:is(#cv-editor, #ds-editor, #mp-editor) .uc-controls { background: var(--ucx-surface) !important; border-color: var(--ucx-border) !important; color: var(--ucx-text) !important; }
+#ds-editor .ds-note { background: transparent !important; border: 0 !important; padding: 0 !important; font: 12px/1.5 var(--ucx-font) !important; }
+#ds-editor .ds-type-icon { background: var(--ucx-panel) !important; color: var(--ucx-muted) !important; }
+#ds-editor .ds-library :is(b, span) { color: var(--ucx-text) !important; }
+#ds-editor .ds-library b { font-size: 12px !important; }
+#ds-editor .ds-library small { font-size: 11px !important; }
+#ds-editor .ds-library h2, #mp-editor .mp-board-list h2 { font-size: 13px !important; }
+#ds-editor .ds-inspector h2 { font-size: 18px !important; }
+#cv-editor :is(.cv-toggle, .cv-advanced) { background: var(--ucx-panel) !important; border-color: var(--ucx-border-soft) !important; color: var(--ucx-text) !important; }
+#cv-editor .cv-toggle input { display: block; position: absolute; opacity: 0; width: 30px; cursor: pointer; }
+#cv-editor .cv-toggle:focus-within { outline: 2px solid var(--ucx-accent); outline-offset: 2px; }
+#cv-editor .cv-toggle input:checked + span { background: var(--ucx-accent) !important; }
+#cv-editor .cv-toggle input:checked + span:after { background: #fff !important; }
+#chronicle-editor .ch-editor-sidebar { display: flex; flex-direction: column; }
+#chronicle-editor .ch-case-list { flex: 1; overflow: auto; }
+#chronicle-editor .ch-editor-item { background: var(--ucx-surface) !important; color: var(--ucx-text) !important; border-color: var(--ucx-border-soft) !important; }
+#chronicle-editor label span { text-transform: none !important; letter-spacing: 0 !important; }
+#chronicle-editor label { text-transform: none !important; letter-spacing: 0 !important; color: var(--ucx-muted) !important; }
+#cv-editor .cv-stage { background-color: var(--ucx-panel) !important; }
+#chronicle-editor .ch-section-head h2 { font-size: 18px; }
+#mp-editor .mp-node { background: var(--ucx-surface) !important; color: var(--ucx-text) !important; border: 1px solid var(--ucx-border) !important; border-radius: 4px; box-shadow: 0 2px 6px #00000010 !important; text-shadow: none !important; }
+#mp-editor .mp-node:before, #mp-editor .mp-node:after { display: none; }
+#mp-editor .mp-node:hover { scale: 1; translate: none; }
+#mp-editor .mp-node :is(h3, p, small) { color: var(--ucx-text) !important; font-family: var(--ucx-font) !important; }
+#mp-editor .mp-node :is(small, p) { font-size: 11px; letter-spacing: 0; }
+@media (max-width: 1100px) {
+  #cv-editor .cv-layout { grid-template-columns: 190px minmax(0, 1fr) 280px !important; }
+  #ds-editor .ds-editor-v2 { grid-template-columns: 190px minmax(0, 1fr) 280px !important; }
+  #mp-editor .mp-editor-layout { grid-template-columns: 190px minmax(0, 1fr) 280px !important; }
+  :is(#cv-editor, #ds-editor, #mp-editor) > header { padding: 8px !important; }
+}
+@media (max-width: 760px) {
+  #cv-editor .cv-layout, #ds-editor .ds-editor-v2, #mp-editor .mp-editor-layout { display: flex !important; flex-wrap: wrap; overflow: auto; }
+  :is(#cv-editor, #ds-editor, #mp-editor) :is(.cv-scene, .ds-library, .mp-board-list) { width: 100%; max-height: 220px; flex: 0 0 100%; }
+  :is(#cv-editor, #ds-editor, #mp-editor) :is(.cv-layout > main, .ds-graph, .mp-editor-layout > main) { flex: 1 0 100%; min-height: 360px; }
+  :is(#cv-editor, #ds-editor, #mp-editor) :is(.cv-props, .ds-inspector, .mp-properties) { display: block !important; flex: 1 0 100%; width: 100%; }
+  #chronicle-editor { grid-template-columns: 1fr; overflow: auto; }
+  #chronicle-editor .ch-editor-sidebar { display: block; }
+  #chronicle-editor .ch-editor-scroll { overflow: visible; }
+}

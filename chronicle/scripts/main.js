@@ -1,5 +1,5 @@
 const MOD = "chronicle";
-const VERSION = "1.0.1";
+const VERSION = "1.1.0";
 const DATA_VERSION = 1;
 const SOCKET = `module.${MOD}`;
 const CARD_ICONS = Object.freeze([
@@ -2001,7 +2001,7 @@ Hooks.once("ready", async () => {
   if (game.settings.get(MOD, "visible")) openViewer();
   const module = game.modules.get(MOD);
   module.api = {
-    version: "1.0.1",
+    version: "1.1.0",
     open: openViewer,
     close: closeViewer,
     openEditor,

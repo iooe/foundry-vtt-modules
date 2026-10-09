@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.0
+
+- Shared neutral editor surfaces with persistent light and dark themes.
+- Search, keyboard save, compact menus and document selectors with UUID drops.
+- Revision-aware save status for Dialogue Stage and Mind Palace.
+- Browser coverage for all four editors, including responsive layout and quest/table selection.
+
 ## 2.4.0
 
 - Corrected cursor-anchored zoom and drag deltas inside CSS-scaled Foundry UI.
