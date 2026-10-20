@@ -1,7 +1,7 @@
 {
   "id": "chronicle",
-  "title": "Chronicle — Timeline Cases",
-  "description": "Кооперативное восстановление хронологии событий с последствиями для города, диалогов и расследования.",
+  "title": "Chronicle",
+  "description": "Players put the events of a case in order together. A solved timeline can reveal City Viewer points and Mind Palace evidence or change Dialogue Stage variables.",
   "version": "1.1.0",
   "authors": [
     {

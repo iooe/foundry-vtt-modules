@@ -1,7 +1,7 @@
 {
   "id": "unicanvas",
   "title": "UniCanvas",
-  "description": "A reusable high-performance DOM/SVG canvas engine for Foundry modules.",
+  "description": "Pan and zoom canvas and shared editor controls used by City Viewer, Mind Palace, Dialogue Stage and Chronicle.",
   "version": "2.6.0",
   "authors": [{ "name": "UniCanvas" }],
   "compatibility": { "minimum": "13", "verified": "14" },

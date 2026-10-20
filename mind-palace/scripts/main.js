@@ -1828,7 +1828,7 @@ function renderEditor() {
     .querySelector('[data-act="connect"]')
     .classList.toggle("active", S.connecting);
   S.editor.querySelector(".mp-board-list").innerHTML =
-    `<div class="mp-side-title"><h2>${t("MP.Boards", "Investigations")}</h2><button data-act="newboard"><i class="fas fa-plus"></i></button></div><div class="mp-board-buttons">${S.draft.boards.map((b) => `<button class="${b.id === S.board ? "active" : ""}" data-board-select="${b.id}"><i class="fas fa-folder-open"></i><span>${esc(b.title)}</span><small>${b.nodes.length}</small></button>`).join("")}</div><button class="mp-template" data-act="template"><i class="fas fa-wand-magic-sparkles"></i>${t("MP.Template", "Create example case")}</button><button class="mp-delete-board" data-act="deleteboard"><i class="fas fa-trash"></i>${t("MP.DeleteBoard", "Delete investigation")}</button>`;
+    `<div class="mp-side-title"><h2>${t("MP.Boards", "Investigations")}</h2><button data-act="newboard"><i class="fas fa-plus"></i></button></div><div class="mp-board-buttons">${S.draft.boards.map((b) => `<button class="${b.id === S.board ? "active" : ""}" data-board-select="${b.id}"><i class="fas fa-folder-open"></i><span>${esc(b.title)}</span><small>${b.nodes.length}</small></button>`).join("")}</div><button class="mp-template" data-act="template"><i class="fas fa-file-circle-plus"></i>${t("MP.Template", "Create example case")}</button><button class="mp-delete-board" data-act="deleteboard"><i class="fas fa-trash"></i>${t("MP.DeleteBoard", "Delete investigation")}</button>`;
   S.editor.querySelector(".mp-editor-stage").innerHTML =
     `<div class="mp-editor-frame">${boardHTML(board, true)}${S.connecting ? `<div class="mp-connect-toast"><i class="fas fa-link"></i>${t("MP.ConnectHint", "Select two cards to connect them")}</div>` : ""}</div>`;
   S.editor.querySelector(".mp-properties").innerHTML = node
@@ -1947,7 +1947,7 @@ function mountEditorCanvas() {
   if (S.selected) S.canvas.select(S.selected);
 }
 function boardProperties(board) {
-  return `<div class="mp-panel-head"><small>${t("MP.Properties", "Properties")}</small><h2>${t("MP.Boards", "Investigation")}</h2></div><label>${t("MP.BoardTitle", "Investigation title")}<input data-board-prop="title" value="${esc(board.title)}"></label><label>${t("MP.Subtitle", "Subtitle")}<textarea data-board-prop="subtitle">${esc(board.subtitle)}</textarea></label><div class="mp-empty-select"><i class="fas fa-hand-pointer"></i><p>${t("MP.NoSelection", "Select a card to edit it")}</p></div>`;
+  return `<div class="mp-panel-head"><h2>${t("MP.Investigation", "Investigation")}</h2></div><label>${t("MP.BoardTitle", "Investigation title")}<input data-board-prop="title" value="${esc(board.title)}"></label><label>${t("MP.Subtitle", "Subtitle")}<textarea data-board-prop="subtitle">${esc(board.subtitle)}</textarea></label><div class="mp-empty-select"><p>${t("MP.NoSelection", "Select a card to edit it")}</p></div>`;
 }
 function nodeProperties(node, board) {
   const links = board.links.filter(
@@ -2001,17 +2001,17 @@ function consequenceTypeMeta(type) {
     },
     narrative: {
       icon: "fa-clapperboard",
-      label: t("MP.OutcomeNarrative", "Cinematic outcome"),
+      label: t("MP.OutcomeNarrative", "Story text"),
     },
   }[type];
 }
 
 function consequenceStatusText(consequence) {
   return consequence.status === "delivered"
-    ? t("MP.OutcomeStatusDelivered", "DELIVERED")
+    ? t("MP.OutcomeStatusDelivered", "Delivered")
     : consequence.status === "failed"
-      ? t("MP.OutcomeStatusFailed", "NEEDS ATTENTION")
-      : t("MP.OutcomeStatusPending", "READY");
+      ? t("MP.OutcomeStatusFailed", "Not delivered")
+      : t("MP.OutcomeStatusPending", "Waiting");
 }
 
 function consequenceErrorText(code) {
@@ -2082,7 +2082,7 @@ function consequenceEditorHTML(board, rule, consequence) {
       )
       .join("")}</select></label><label>${t("MP.PlayerMessage", "Player-facing message")}<input data-consequence-field="label" value="${esc(consequence.label)}" maxlength="160" placeholder="${esc(t("MP.TimelineOpened", "A timeline has opened"))}"></label>`;
   } else {
-    fields = `<label>${t("MP.OutcomeTitle", "Outcome title")}<input data-consequence-field="title" value="${esc(consequence.title)}" maxlength="160"></label><label>${t("MP.OutcomeText", "Cinematic text")}<textarea data-consequence-field="body" maxlength="6000">${esc(consequence.body)}</textarea></label>`;
+    fields = `<label>${t("MP.OutcomeTitle", "Outcome title")}<input data-consequence-field="title" value="${esc(consequence.title)}" maxlength="160"></label><label>${t("MP.OutcomeText", "Text")}<textarea data-consequence-field="body" maxlength="6000">${esc(consequence.body)}</textarea></label>`;
   }
   return `<article class="mp-outcome-card status-${consequence.status}" data-consequence-id="${consequence.id}"><header><span><i class="fas ${meta.icon}"></i><b>${meta.label}</b></span><small>${consequenceStatusText(consequence)}</small><div>${canDeliver ? `<button data-retry-consequence="${consequence.id}" aria-label="${esc(t("MP.DeliverOutcome", "Deliver consequence"))}"><i class="fas fa-rotate"></i></button>` : ""}<button data-remove-consequence="${consequence.id}" aria-label="${esc(t("MP.Delete", "Delete"))}"><i class="fas fa-xmark"></i></button></div></header><div class="mp-outcome-fields">${fields}</div>${consequence.status === "failed" ? `<p class="mp-outcome-error"><i class="fas fa-triangle-exclamation"></i>${esc(consequenceErrorText(consequence.lastError))}</p>` : ""}</article>`;
 }
@@ -2158,9 +2158,9 @@ function deductionPanelHTML(board) {
           .join("")
       : `<p class="mp-deduction-empty">${t("MP.NoDeductions", "No deduction rules yet.")}</p>`;
   const editor = !rule
-    ? `<div class="mp-deduction-blank"><i class="fas fa-lightbulb"></i><p>${t("MP.DeductionEmptyHelp", "Add a rule to turn connected evidence into a reveal.")}</p></div>`
+    ? `<div class="mp-deduction-blank"><p>${t("MP.DeductionEmptyHelp", "Add a rule to turn connected evidence into a reveal.")}</p></div>`
     : deductionRuleEditorHTML(board, rule);
-  return `<section class="mp-deduction-panel" role="dialog" aria-modal="true" aria-label="${esc(t("MP.Deductions", "Deductions"))}"><header><div><small>${t("MP.RuleEditor", "RULE EDITOR")}</small><h2>${t("MP.Deductions", "Deductions")}</h2></div><button data-act="close-deductions" aria-label="${esc(t("MP.Close", "Close"))}"><i class="fas fa-xmark"></i></button></header><div class="mp-deduction-layout"><aside><div class="mp-deduction-list">${list}</div><button class="mp-add-deduction" data-act="add-deduction" ${board.deductions.length >= MAX_DEDUCTIONS ? "disabled" : ""}><i class="fas fa-plus"></i>${t("MP.AddDeduction", "Add deduction")}</button></aside><main>${editor}</main></div></section>`;
+  return `<section class="mp-deduction-panel" role="dialog" aria-modal="true" aria-label="${esc(t("MP.Deductions", "Deductions"))}"><header><div><h2>${t("MP.Deductions", "Deductions")}</h2></div><button data-act="close-deductions" aria-label="${esc(t("MP.Close", "Close"))}"><i class="fas fa-xmark"></i></button></header><div class="mp-deduction-layout"><aside><div class="mp-deduction-list">${list}</div><button class="mp-add-deduction" data-act="add-deduction" ${board.deductions.length >= MAX_DEDUCTIONS ? "disabled" : ""}><i class="fas fa-plus"></i>${t("MP.AddDeduction", "Add deduction")}</button></aside><main>${editor}</main></div></section>`;
 }
 
 function deductionRuleEditorHTML(board, rule) {
@@ -2190,7 +2190,7 @@ function deductionRuleEditorHTML(board, rule) {
           `<option value="${node.id}" ${rule.rewardNodeId === node.id ? "selected" : ""}>${esc(node.title)}</option>`,
       ),
     ].join("");
-  return `<div class="mp-rule-head"><div><small>${rule.revealed ? t("MP.RevealedStatus", "REVEALED") : t("MP.HiddenStatus", "UNSOLVED")}</small><h3>${esc(rule.title)}</h3></div><span>${progress.completed}/${progress.total}</span></div><div class="mp-rule-fields"><label>${t("MP.DeductionName", "Deduction name")}<input data-deduction-prop="title" value="${esc(rule.title)}" maxlength="160"></label><label>${t("MP.DeductionDescription", "Reveal text")}<textarea data-deduction-prop="description" maxlength="6000">${esc(rule.description)}</textarea></label><section><h4>${t("MP.RequiredCards", "Required cards")}</h4><p>${t("MP.RequiredCardsHelp", "These cards must be visible to players.")}</p><div class="mp-rule-checks">${nodeChoices || `<em>${t("MP.NoCards", "Add cards to this investigation first.")}</em>`}</div></section><section><h4>${t("MP.RequiredLinks", "Required connections")}</h4><p>${t("MP.RequiredLinksHelp", "Players must recreate these connections in the board viewer.")}</p><div class="mp-rule-checks">${linkChoices || `<em>${t("MP.NoLinks", "Create card connections on the board first.")}</em>`}</div></section><label>${t("MP.RewardCard", "Card revealed on success")}<select data-deduction-reward>${rewardOptions}</select></label>${consequenceSectionHTML(board, rule)}</div><footer><button class="danger" data-act="delete-deduction"><i class="fas fa-trash"></i>${t("MP.Delete", "Delete")}</button><span></span><button data-act="reset-deduction"><i class="fas fa-rotate-left"></i>${t("MP.ResetDeduction", "Reset")}</button><button class="accent" data-act="reveal-deduction"><i class="fas fa-eye"></i>${t("MP.RevealNow", "Reveal now")}</button></footer>`;
+  return `<div class="mp-rule-head"><div><small>${rule.revealed ? t("MP.RevealedStatus", "Revealed") : t("MP.HiddenStatus", "Unsolved")}</small><h3>${esc(rule.title)}</h3></div><span>${progress.completed}/${progress.total}</span></div><div class="mp-rule-fields"><label>${t("MP.DeductionName", "Deduction name")}<input data-deduction-prop="title" value="${esc(rule.title)}" maxlength="160"></label><label>${t("MP.DeductionDescription", "Reveal text")}<textarea data-deduction-prop="description" maxlength="6000">${esc(rule.description)}</textarea></label><section><h4>${t("MP.RequiredCards", "Required cards")}</h4><p>${t("MP.RequiredCardsHelp", "These cards must be visible to players.")}</p><div class="mp-rule-checks">${nodeChoices || `<em>${t("MP.NoCards", "Add cards to this investigation first.")}</em>`}</div></section><section><h4>${t("MP.RequiredLinks", "Required connections")}</h4><p>${t("MP.RequiredLinksHelp", "Players must recreate these connections in the board viewer.")}</p><div class="mp-rule-checks">${linkChoices || `<em>${t("MP.NoLinks", "Create card connections on the board first.")}</em>`}</div></section><label>${t("MP.RewardCard", "Card revealed on success")}<select data-deduction-reward>${rewardOptions}</select></label>${consequenceSectionHTML(board, rule)}</div><footer><button class="danger" data-act="delete-deduction"><i class="fas fa-trash"></i>${t("MP.Delete", "Delete")}</button><span></span><button data-act="reset-deduction"><i class="fas fa-rotate-left"></i>${t("MP.ResetDeduction", "Reset")}</button><button class="accent" data-act="reveal-deduction"><i class="fas fa-eye"></i>${t("MP.RevealNow", "Reveal now")}</button></footer>`;
 }
 
 function renderDeductionPanel() {
@@ -2980,7 +2980,6 @@ function queueProjectSave(
           boardId: snapshot.activeBoard,
           userId: game.user.id,
         });
-      if (notify) ui.notifications.info(t("MP.Saved", "Mind palace saved."));
       globalThis.UniCanvasEditor?.setSaveState(editor, "saved", revision);
       return true;
     } catch (error) {
@@ -3160,8 +3159,8 @@ function showNextDeductionReveal() {
       ? `<div class="mp-reveal-outcomes">${outcomes
           .map((outcome) => {
             if (outcome.type === "narrative")
-              return `<section class="mp-cinematic-outcome"><small>${t("MP.WhatHappensNext", "WHAT HAPPENS NEXT")}</small><h3>${esc(outcome.title)}</h3><p>${esc(outcome.body)}</p></section>`;
-            const icon = consequenceTypeMeta(outcome.type)?.icon || "fa-sparkles";
+              return `<section class="mp-cinematic-outcome"><h3>${esc(outcome.title)}</h3><p>${esc(outcome.body)}</p></section>`;
+            const icon = consequenceTypeMeta(outcome.type)?.icon || "fa-arrow-right";
             return `<div class="mp-reveal-outcome"><i class="fas ${icon}"></i><b>${esc(outcome.label)}</b></div>`;
           })
           .join("")}</div>`
@@ -3172,7 +3171,7 @@ function showNextDeductionReveal() {
   layer.setAttribute("role", "dialog");
   layer.setAttribute("aria-modal", "true");
   layer.setAttribute("aria-label", rule.title);
-  layer.innerHTML = `<article><div class="mp-reveal-mark"><i class="fas fa-lightbulb"></i></div><small>${t("MP.DeductionComplete", "DEDUCTION COMPLETE")}</small><h2>${esc(currentRule.title)}</h2><p>${esc(currentRule.description)}</p>${reward && !rewardShown ? `<div class="mp-reward-line"><i class="fas fa-lock-open"></i><span>${t("MP.ClueUnlocked", "Clue unlocked")}</span><b>${esc(reward.title)}</b></div>` : ""}${outcomeHtml}<button data-reveal-close><span>${t("MP.Continue", "Continue")}</span><i class="fas fa-arrow-right"></i></button></article>`;
+  layer.innerHTML = `<article><small>${t("MP.DeductionComplete", "Deduction complete")}</small><h2>${esc(currentRule.title)}</h2><p>${esc(currentRule.description)}</p>${reward && !rewardShown ? `<div class="mp-reward-line"><i class="fas fa-lock-open"></i><span>${t("MP.ClueUnlocked", "Clue unlocked")}</span><b>${esc(reward.title)}</b></div>` : ""}${outcomeHtml}<button data-reveal-close><span>${t("MP.Continue", "Continue")}</span><i class="fas fa-arrow-right"></i></button></article>`;
   const close = () => {
     layer.remove();
     S.revealActive = false;
@@ -3213,7 +3212,7 @@ function openViewer(boardId = null, preview = false, initialState = null) {
   el.setAttribute("role", "dialog");
   el.setAttribute("aria-modal", "true");
   el.setAttribute("aria-label", board.title);
-  el.innerHTML = `<div class="mp-view-top"><div><small>${t("MP.Title", "Mind Palace")}</small><h1>${esc(board.title)}</h1><p>${esc(board.subtitle)}</p></div><nav><button data-view="character"><i class="fas fa-user-shield"></i>${t("MP.Character", "Character")}</button><button data-view="chat" aria-pressed="false"><i class="fas fa-comments"></i>${t("MP.Chat", "Chat")}</button><button data-view="add-note"><i class="fas fa-note-sticky"></i>${t("MP.AddMyNote", "Note")}</button><button data-view="connect" aria-pressed="false"><i class="fas fa-link"></i>${t("MP.LinkClues", "Connect clues")}</button><button data-view="reset-layout"><i class="fas fa-rotate-left"></i>${t("MP.ResetLayout", "Reset layout")}</button>${game.user.isGM ? `<button data-view="edit"><i class="fas fa-pen-ruler"></i>${t("MP.Editor", "Case editor")}</button><button data-view="show"><i class="fas fa-users-viewfinder"></i>${t("MP.Show", "Open for everyone")}</button>` : ""}<button data-view="close"><i class="fas fa-xmark"></i>${t("MP.Close", "Close")}</button></nav></div><div class="mp-player-shell">${boardHTML(board, false)}${!board.nodes.some((n) => n.revealed) ? `<div class="mp-empty">${t("MP.Empty", "The mind palace is empty.")}</div>` : ""}</div>${deductionTrackerHTML(board)}<div class="mp-player-connect-toast" hidden><i class="fas fa-link"></i><span></span></div><div class="mp-view-hint"><i class="fas fa-computer-mouse"></i>${t("MP.PlayerMoveHint", "Drag cards and the board · mouse wheel to zoom")}</div>`;
+  el.innerHTML = `<div class="mp-view-top"><div><h1>${esc(board.title)}</h1><p>${esc(board.subtitle)}</p></div><nav><button data-view="character"><i class="fas fa-user-shield"></i>${t("MP.Character", "Character")}</button><button data-view="chat" aria-pressed="false"><i class="fas fa-comments"></i>${t("MP.Chat", "Chat")}</button><button data-view="add-note"><i class="fas fa-note-sticky"></i>${t("MP.AddMyNote", "Note")}</button><button data-view="connect" aria-pressed="false"><i class="fas fa-link"></i>${t("MP.LinkClues", "Connect clues")}</button><button data-view="reset-layout"><i class="fas fa-rotate-left"></i>${t("MP.ResetLayout", "Reset layout")}</button>${game.user.isGM ? `<button data-view="edit"><i class="fas fa-pen-ruler"></i>${t("MP.Editor", "Case editor")}</button><button data-view="show"><i class="fas fa-users-viewfinder"></i>${t("MP.Show", "Open for everyone")}</button>` : ""}<button data-view="close"><i class="fas fa-xmark"></i>${t("MP.Close", "Close")}</button></nav></div><div class="mp-player-shell">${boardHTML(board, false)}${!board.nodes.some((n) => n.revealed) ? `<div class="mp-empty">${t("MP.Empty", "The mind palace is empty.")}</div>` : ""}</div>${deductionTrackerHTML(board)}<div class="mp-player-connect-toast" hidden><i class="fas fa-link"></i><span></span></div><div class="mp-view-hint"><i class="fas fa-computer-mouse"></i>${t("MP.PlayerMoveHint", "Drag cards and the board · mouse wheel to zoom")}</div>`;
   document.body.append(el);
   S.viewer = el;
   bindViewer(el, board, preview, initialState);

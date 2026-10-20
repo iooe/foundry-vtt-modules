@@ -1,7 +1,7 @@
 {
   "id": "mind-palace",
-  "title": "Mind Palace — Detective Board",
-  "description": "A cinematic mind palace and evidence-board editor for detective roleplay.",
+  "title": "Mind Palace",
+  "description": "An evidence board for investigations: cards, connections and deductions that reveal new clues.",
   "version": "2.8.0",
   "authors": [
     {

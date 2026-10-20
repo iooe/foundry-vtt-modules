@@ -1,7 +1,7 @@
 {
   "id": "dialogue-stage",
-  "title": "Диалоговая сцена",
-  "description": "Кинематографичные ветвящиеся диалоги с последствиями выбора, отношениями и состоянием истории.",
+  "title": "Dialogue Stage",
+  "description": "Branching dialogues with portraits, relationships and story variables that later choices can depend on.",
   "version": "3.2.0",
   "authors": [
     {

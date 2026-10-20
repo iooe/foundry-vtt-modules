@@ -197,8 +197,7 @@
   position: absolute;
   inset: 0 auto 0 0;
   width: var(--relationship);
-  background: linear-gradient(90deg, #7e3e35, var(--ds-accent), #d8bd82);
-  box-shadow: 0 0 10px var(--ds-accent);
+  background: var(--ds-accent);
   transition: width 0.45s ease;
 }
 .ds-copy {
@@ -1056,9 +1055,7 @@ body.ds-chat-open #sidebar {
 .ds-rule-block h3 {
   margin: 0 0 9px;
   color: #d0c2af;
-  font: 700 8px var(--ds-font-sans);
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
+  font: 600 12px var(--ds-font-sans);
 }
 .ds-rule-row {
   display: grid;

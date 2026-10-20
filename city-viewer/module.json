@@ -1,7 +1,7 @@
 {
   "id": "city-viewer",
-  "title": "City Viewer — City Editor",
-  "description": "Fullscreen interactive cities and a visual editor for the Game Master.",
+  "title": "City Viewer",
+  "description": "Fullscreen city screens with clickable points for players, and an editor for the Game Master.",
   "version": "6.4.0",
   "scripts": [
     "scripts/vendor/tsparticles.slim.bundle.min.js"

@@ -40,11 +40,8 @@
   border: 1px solid #b99a6266;
   border-radius: 5px;
   color: #eadab8;
-  background: linear-gradient(145deg, #16191ddd, #211a14ee);
-  box-shadow:
-    0 9px 30px #0009,
-    inset 0 0 16px #b99a620d;
-  backdrop-filter: blur(8px);
+  background: #16191ddd;
+  box-shadow: 0 9px 30px #0009;
   cursor: pointer;
 }
 .mp-personal-note {
@@ -423,9 +420,6 @@
   border: 1px dashed #ffffff16;
   color: #777;
 }
-.mp-empty-select i {
-  font-size: 22px;
-}
 .mp-relation-head {
   display: flex;
   align-items: center;
@@ -739,12 +733,6 @@
   justify-content: space-between;
   padding: 20px 24px;
   background: linear-gradient(#080b0cf5, transparent);
-}
-.mp-view-top small {
-  color: #b99a62;
-  font-size: 8px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
 }
 .mp-view-top h1 {
   margin: 1px 0;
@@ -1720,10 +1708,6 @@ body:has(#mp-viewer) .application {
   text-align: center;
   line-height: 1.6;
 }
-.mp-deduction-blank i {
-  color: #b99a62;
-  font-size: 28px;
-}
 
 .mp-links .mp-player-link path:not(.shadow) {
   stroke: #d9b46c;
@@ -1791,10 +1775,8 @@ body:has(#mp-viewer) .application {
   padding: 9px 11px;
   border-bottom: 1px solid #ffffff10;
   color: #c5b48d;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
 }
 .mp-deduction-tracker > header i {
   margin-right: 7px;
@@ -1851,7 +1833,6 @@ body:has(#mp-viewer) .application {
   display: block;
   height: 100%;
   background: #b99a62;
-  box-shadow: 0 0 8px #b99a62;
 }
 
 .mp-deduction-reveal {
@@ -1861,10 +1842,7 @@ body:has(#mp-viewer) .application {
   display: grid;
   place-items: center;
   padding: 24px;
-  background:
-    radial-gradient(circle at 50% 48%, #5f4b2c30, transparent 38%),
-    #050708e8;
-  backdrop-filter: blur(14px);
+  background: #050708e8;
   animation: mp-fade 0.25s ease;
 }
 .mp-deduction-reveal article {
@@ -1875,34 +1853,13 @@ body:has(#mp-viewer) .application {
   border: 1px solid #b99a6266;
   border-radius: 4px;
   color: #d9d4ca;
-  background: linear-gradient(145deg, #161b1e, #0d1012);
+  background: #111517;
   box-shadow: 0 35px 120px #000;
   text-align: center;
 }
-.mp-deduction-reveal article:before {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  border: 1px solid #b99a621c;
-  pointer-events: none;
-}
-.mp-reveal-mark {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  margin: 0 auto 18px;
-  border: 1px solid #b99a6280;
-  border-radius: 50%;
-  color: #e2c78d;
-  background: #b99a6210;
-  box-shadow: 0 0 45px #b99a6230;
-  font-size: 22px;
-}
 .mp-deduction-reveal small {
   color: #b99a62;
-  font-size: 8px;
-  letter-spacing: 2.2px;
+  font-size: 12px;
 }
 .mp-deduction-reveal h2 {
   margin: 8px 0 18px;
@@ -1963,23 +1920,12 @@ body:has(#mp-viewer) .application {
   padding: 18px 18px 17px;
   overflow: hidden;
   border: 1px solid #b99a6250;
-  background: linear-gradient(130deg, #2b2318aa, #111416);
+  border-left: 2px solid #d2ad67;
+  background: #15181a;
   text-align: left;
 }
-.mp-cinematic-outcome:before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 2px;
-  background: #d2ad67;
-  box-shadow: 0 0 16px #d2ad67;
-}
-.mp-cinematic-outcome small {
-  color: #a98f60;
-  letter-spacing: 1.5px;
-}
 .mp-cinematic-outcome h3 {
-  margin: 5px 0 7px;
+  margin: 0 0 7px;
   color: #eadfc9;
   font: 700 21px/1.1 var(--mp-font-serif);
 }

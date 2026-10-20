@@ -11,7 +11,7 @@
 
 - Corrected cursor-anchored zoom and drag deltas inside CSS-scaled Foundry UI.
 - Reworked pinch gestures around a stable world-space focal point.
-- Added pointer-capture recovery and seamless pinch-to-one-finger pan.
+- Added pointer-capture recovery and pinch-to-one-finger pan without a jump.
 - Batched camera and drag writes with `requestAnimationFrame`.
 - Removed duplicate drag commits on pointer release and click-only gestures.
 - Added complete cleanup for active gestures, timers, animation frames,
